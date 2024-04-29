@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Modal by async await firebase</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" 
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="row mt-4">
+               <div class="col-md-6 col-sm-6 mb-4 col-xs-6">
+                  <div class="logo text-left">
+                    <a href="index.html">
+                    <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_exploreplus-44005d.svg" 
+                    alt="logo">
+                    </a>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-6 col-xs-6 text-right mb-4">
+                  <button type="button" class="btn btn-warning" id="addProductModal">Add products</button>
+               </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row" id="productContainer">
+            <!-- <div class="col-md-4">
+                <div class="card mb-4">
+                   <figure class="productCard">
+                      <img src="data:image/jpeg;base64,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"
+                       alt="">
+                       <figcaption>
+                        <div class="statusSection">
+                            <div class="row">
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <h3>Name of the product</h3>
+                                <span>status of product</span>
+
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <span>rating</span>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="discriptionSection">
+                            <h4>Name of the product</h4>
+                            <em>Discription</em>
+                            <p>product discription</p>
+                            <div class="buttons">
+                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                       </figcaption>
+                   </figure>
+                </div>
+            </div> -->
+        </div>
+    </div>
+ 
+    <div class="backdrop closeModal" id="backdrop"></div>
+
+    <div class="productModal card mb-4" id="productModal">
+        <div class="card-heading">
+            <h3>Add products</h3>
+        </div>
+        <div class="card-body">
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="title">product Name</label>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="form-group">
+                    <label for="imgUrl">product ImageUrl</label>
+                    <input type="text" class="form-control" id="imageUrl">
+                </div>
+                <div class="form-group">
+                    <label for="rating">product Rating</label>
+                    <select  id="rating" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">product Description</label>
+                    <textarea id="description" rows="3" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="status">product status</label>
+                    <select id="status" class="form-control">
+                         <option value="Viewed">Viewed</option>
+                         <option value="Rejected">Rejected</option>
+                         <option value="In process">In process</option>
+                         <option value="pending">pending</option>
+                         <option value="ready for dispatch">ready for dispatch</option>
+                         <option value="Partially dispatched">Partially dispatched</option>
+                        <option value="dispatched">dispatched</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Returned">Returned</option>
+                        <option value="Closed">Closed</option>p
+                    </select>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn btn-danger closeModal" type="button" id="cancelbtn">cancel</button>
+                    <button class="btn btn-success" id="addBtn" type="submit">Add product</button>
+                    <button class="btn btn-primary d-none" id="updateBtn" type="button">Update product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="loader d-none" id="loader">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" 
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+</html>
+
+
+
+
+	
